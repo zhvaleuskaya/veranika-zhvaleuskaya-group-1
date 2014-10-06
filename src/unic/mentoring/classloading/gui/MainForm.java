@@ -13,7 +13,6 @@ import java.io.IOException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -22,22 +21,26 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
-import unic.mentoring.classloading.core.DirectoryClassLoader;
+import unic.mentoring.classloading.core.ClassInfo;
 import unic.mentoring.classloading.core.DirectoryClassLoaderListener;
+import unic.mentoring.classloading.core.DirectoryClassLoaderService;
+import unic.mentoring.classloading.core.DirectoryClassLoaderServiceImpl;
 
 public class MainForm implements DirectoryClassLoaderListener
 {
 	private static final Logger LOG = Logger.getLogger(MainForm.class);
 	
 	private JFrame formMain;
-	private DefaultListModel<String> listClassesModel;
-	private JList<String> listClasses;
+	private DefaultListModel<ClassInfo> listClassesModel;
+	private JList<ClassInfo> listClasses;
 	private JButton bReload;
-	private DirectoryClassLoader dcl;
 	private JLabel lPath;
 	private JTextField tfPath;
-	private JCheckBox cbRecursive;
 	private JButton bLoad;
+	private DirectoryClassLoaderService dclService;
+	private JButton bCreateInstance;
+	private JButton bRemoveInstance;
+	private JButton bRemoveAllInstances;
 
 	public static void main(String[] args)
 	{
@@ -60,8 +63,18 @@ public class MainForm implements DirectoryClassLoaderListener
 
 	public MainForm()
 	{
+		try
+		{
+			dclService = new DirectoryClassLoaderServiceImpl();
+			dclService.addDirectoryClassLoaderListener(this);
+		}
+		catch (IOException e)
+		{
+			LOG.fatal("Can't create DirectoryClassLoaderService: " + e.getMessage());
+			System.exit(0);
+		}
+		
 		listClassesModel = new DefaultListModel<>();
-		recreateClassloader();
 		
 		initialize();
 	}
@@ -71,16 +84,16 @@ public class MainForm implements DirectoryClassLoaderListener
 		formMain = new JFrame();
 		formMain.setResizable(false);
 		formMain.setTitle("HW01 - Dynamic class loading");
-		formMain.setBounds(100, 100, 401, 325);
+		formMain.setBounds(100, 100, 603, 382);
 		formMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		formMain.getContentPane().setLayout(null);
 		
 		JLabel lClasses = new JLabel("Loaded classes:");
-		lClasses.setBounds(10, 37, 101, 14);
+		lClasses.setBounds(10, 37, 89, 14);
 		formMain.getContentPane().add(lClasses);
 		
 		JScrollPane scrollClasses = new JScrollPane();
-		scrollClasses.setBounds(10, 62, 375, 224);
+		scrollClasses.setBounds(10, 62, 577, 281);
 		formMain.getContentPane().add(scrollClasses);
 		
 		listClasses = new JList<>();
@@ -95,23 +108,18 @@ public class MainForm implements DirectoryClassLoaderListener
 				String directory = tfPath.getText().trim();
 				
 				if (directory.length() > 0)
-					reloadClasses(directory, cbRecursive.isSelected());
+					reloadClasses(directory);
 			}
 		});
-		bReload.setBounds(212, 33, 89, 23);
+		bReload.setBounds(498, 7, 89, 23);
 		formMain.getContentPane().add(bReload);
 		
 		lPath = new JLabel("Watch for:");
-		lPath.setBounds(10, 11, 101, 14);
+		lPath.setBounds(10, 11, 89, 14);
 		formMain.getContentPane().add(lPath);
 		
-		cbRecursive = new JCheckBox("Recursive");
-		cbRecursive.setSelected(true);
-		cbRecursive.setBounds(117, 35, 89, 19);
-		formMain.getContentPane().add(cbRecursive);
-		
 		tfPath = new JTextField("ext");
-		tfPath.setBounds(118, 8, 267, 19);
+		tfPath.setBounds(109, 7, 295, 23);
 		formMain.getContentPane().add(tfPath);
 		tfPath.setColumns(10);
 		
@@ -123,52 +131,119 @@ public class MainForm implements DirectoryClassLoaderListener
 				String directory = tfPath.getText().trim();
 				
 				if (directory.length() > 0)
-					addClasses(directory, cbRecursive.isSelected());
+					addClasses(directory);
 			}
 		});
-		bLoad.setBounds(311, 33, 74, 23);
+		bLoad.setBounds(414, 7, 74, 23);
 		formMain.getContentPane().add(bLoad);
+		
+		bCreateInstance = new JButton("Create instance");
+		bCreateInstance.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int index = listClasses.getSelectedIndex();
+				
+				if (index != -1)
+				{
+					ClassInfo classInfo = listClassesModel.getElementAt(index);
+					
+					try
+					{
+						Object instance = dclService.createInstance( classInfo.getClaŝŝ() );
+						
+						if (instance != null)
+							classInfo.setInstance(instance);
+					}
+					catch (InstantiationException | IllegalAccessException ex)
+					{
+						LOG.error("Can't create instance of " + classInfo.getClaŝŝ() + ":" + ex.getMessage());
+						classInfo.setNonInstantiable(true);
+					}
+					
+					listClasses.repaint();
+				}
+			}
+		});
+		bCreateInstance.setBounds(446, 33, 141, 23);
+		formMain.getContentPane().add(bCreateInstance);
+		
+		bRemoveInstance = new JButton("Remove instance");
+		bRemoveInstance.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int index = listClasses.getSelectedIndex();
+				
+				if (index != -1)
+				{
+					ClassInfo classInfo = listClassesModel.getElementAt(index);
+					removeInstance(classInfo);
+					listClasses.repaint();
+				}
+			}
+		});
+		bRemoveInstance.setBounds(281, 33, 155, 23);
+		formMain.getContentPane().add(bRemoveInstance);
+		
+		bRemoveAllInstances = new JButton("Remove all instances");
+		bRemoveAllInstances.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				dclService.removeAllInstances();
+				
+				for (int i = 0; i < listClassesModel.getSize(); ++i)
+					removeInstance( listClassesModel.getElementAt(i) );
+				
+				listClasses.repaint();
+			}
+		});
+		bRemoveAllInstances.setBounds(109, 33, 162, 23);
+		formMain.getContentPane().add(bRemoveAllInstances);
 	}
 	
 	protected void recreateClassloader()
 	{
 		listClassesModel.removeAllElements();
 		
-		if (dcl != null)
-			dcl.die();
-		
 		try
 		{
-			dcl = new DirectoryClassLoader();
-			dcl.addListener(this);
+			dclService.recreateClassLoader();
 		}
 		catch (IOException e)
 		{
-			LOG.error("Can't create classLoader: " + e.getMessage());
+			LOG.error("Can't recreate class loader: " + e.getMessage());
 		}
 	}
 	
-	protected void reloadClasses(String directory, boolean recursive)
+	protected void reloadClasses(String directory)
 	{
 		recreateClassloader();
-		addClasses(directory, recursive);
+		addClasses(directory);
 	}
 	
-	protected void addClasses(String directory, boolean recursive)
+	protected void addClasses(String directory)
 	{
 		try
 		{
-			dcl.registerDirectory(directory, recursive);
+			dclService.registerDirectory(directory);
 		}
 		catch (IOException e)
 		{
 			LOG.error("Can't load: " + e.getMessage());
 		}
 	}
+	
+	protected void removeInstance(ClassInfo classInfo)
+	{
+		dclService.removeInstance( classInfo.getClaŝŝ() );
+		classInfo.setInstance(null);
+	}
 
 	@Override
 	public void classLoaded(Class<?> claŝŝ)
 	{
-		listClassesModel.addElement( claŝŝ.toString() );
+		listClassesModel.addElement( new ClassInfo(claŝŝ) );
 	}
 }
