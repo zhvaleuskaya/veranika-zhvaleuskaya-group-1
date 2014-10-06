@@ -7,26 +7,23 @@
 package unic.mentoring.classloading.gui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JButton;
-
-import unic.mentoring.classloading.core.DirectoryClassLoader;
-import unic.mentoring.classloading.core.DirectoryClassLoaderListener;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
-import javax.swing.JCheckBox;
+import unic.mentoring.classloading.core.DirectoryClassLoader;
+import unic.mentoring.classloading.core.DirectoryClassLoaderListener;
 
 public class MainForm implements DirectoryClassLoaderListener
 {
@@ -42,9 +39,6 @@ public class MainForm implements DirectoryClassLoaderListener
 	private JCheckBox cbRecursive;
 	private JButton bLoad;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable()
@@ -64,9 +58,6 @@ public class MainForm implements DirectoryClassLoaderListener
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public MainForm()
 	{
 		listClassesModel = new DefaultListModel<>();
@@ -75,9 +66,6 @@ public class MainForm implements DirectoryClassLoaderListener
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize()
 	{
 		formMain = new JFrame();
