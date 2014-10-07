@@ -56,34 +56,22 @@ public class DirectoryClassLoader extends ClassLoader
 		listeners = new ArrayList<>();
 	}
 	
-	public void registerDirectory(String directory, boolean recursive) throws IOException
+	public void registerDirectory(String directory) throws IOException
 	{
 		File file = new File(directory);
 		if (!file.exists())
 			throw new IOException("Directory doesn't exist.");
 		
 		Path path = Paths.get(directory);
-		
-		if (recursive)
-			registerDirectories(path);
-		else
-			registerDirectory(path);
+		registerDirectory(path);
 	}
 	
 	protected void registerDirectory(Path path) throws IOException
 	{
-		WatchKey watchKey = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-		paths.put(watchKey, path);
-		
-		LOG.info("Registered: " + path.toString());
-	}
-	
-	protected void registerDirectories(Path path) throws IOException
-	{
 		Files.walkFileTree(path, directoryVisitor);
 	}
 
-	void processEvents()
+	protected void processEvents()
 	{
 		while (alive)
 		{
@@ -114,7 +102,7 @@ public class DirectoryClassLoader extends ClassLoader
 					{
 						if (Files.isDirectory(child, LinkOption.NOFOLLOW_LINKS))
 						{
-							registerDirectories(child);
+							registerDirectory(child);
 						}
 						else
 						{
@@ -133,9 +121,11 @@ public class DirectoryClassLoader extends ClassLoader
 				if (paths.isEmpty())
 					break;
 			}
+			
+			sleep(CHECK_PERIOD);
 		}
 		
-		sleep(CHECK_PERIOD);
+		listeners.clear();
 	}
 	
 	protected class ThisDirectoryVisitor extends SimpleFileVisitor<Path>
@@ -143,7 +133,11 @@ public class DirectoryClassLoader extends ClassLoader
 		@Override
 		public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes attrs) throws IOException
 		{
-			registerDirectory(path);
+			WatchKey watchKey = path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+			paths.put(watchKey, path);
+			
+			LOG.info("Registered: " + path.toString());
+			
 			return FileVisitResult.CONTINUE;
 		}
 		
