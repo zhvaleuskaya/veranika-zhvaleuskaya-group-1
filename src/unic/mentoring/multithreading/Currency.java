@@ -30,4 +30,22 @@ public class Currency implements Serializable
 	{
 		return valuette;
 	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof Currency)
+		{
+			Currency currency = (Currency)o;
+			return code.equals( currency.getCode() );
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return code.hashCode();
+	}
 }

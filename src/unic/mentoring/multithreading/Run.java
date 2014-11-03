@@ -13,6 +13,8 @@ public class Run
 	
 	public static void main(String[] args)
 	{
+		int mode = 1;
+		
 		try
 		{
 			String id = null;
@@ -39,45 +41,53 @@ public class Run
 			bank.saveAll();
 			bank.loadAll();
 			
-			Counter counter = new Counter();
-			Thread[][] threads = new Thread[3][];
-			threads[0] = new Thread[2];
-			// 2 threads * 8 conversions = 16 conversions
-			for (int i = 0; i < 2; ++i)
-				threads[0][i] = new Thread( new UserClientBot(bank, "0", 8, counter) );
-			threads[1] = new Thread[4];
-			// 4 threads * 16 conversions = 64 conversions
-			for (int i = 0; i < 4; ++i)
-				threads[1][i] = new Thread( new UserClientBot(bank, "1", 16, counter) );
-			threads[2] = new Thread[8];
-			// 8 threads * 32 conversions = 256 conversions
-			for (int i = 0; i < 8; ++i)
-				threads[2][i] = new Thread( new UserClientBot(bank, "2", 32, counter) );
-			
-			for (int t = 0; t < 3; ++t)
+			if (mode == 0)
 			{
-				for (int i = 0; i < threads[t].length; ++i)
+				Counter counter = new Counter();
+				Thread[][] threads = new Thread[3][];
+				threads[0] = new Thread[2];
+				// 2 threads * 8 conversions = 16 conversions
+				for (int i = 0; i < 2; ++i)
+					threads[0][i] = new Thread( new UserClientBot(bank, "0", 8, counter) );
+				threads[1] = new Thread[4];
+				// 4 threads * 16 conversions = 64 conversions
+				for (int i = 0; i < 4; ++i)
+					threads[1][i] = new Thread( new UserClientBot(bank, "1", 16, counter) );
+				threads[2] = new Thread[8];
+				// 8 threads * 32 conversions = 256 conversions
+				for (int i = 0; i < 8; ++i)
+					threads[2][i] = new Thread( new UserClientBot(bank, "2", 32, counter) );
+				
+				for (int t = 0; t < 3; ++t)
 				{
-					threads[t][i].start();
-					
-					// It can be used to execute conversions one by one
-					//threads[t][i].join();
+					for (int i = 0; i < threads[t].length; ++i)
+					{
+						threads[t][i].start();
+						
+						// It can be used to execute conversions one by one
+						//threads[t][i].join();
+					}
+				}
+				
+				// Total conversions: 256 + 64 + 16 = 336
+				while (counter.getCount() < 336)
+				{
+					Thread.sleep(10);
+				}
+				
+				Currency currencyEur = bank.getCurrency("eur");
+				Currency currencyUsd = bank.getCurrency("usd");
+				String[] accountIds = {"0", "1", "2"};
+				for (String accountId : accountIds)
+				{
+					Account account = bank.getAccount(accountId);
+					System.out.println( account.getId() + " " + account.getName() + " " + account.getAmount(currencyEur) + " " + account.getAmount(currencyUsd) );
 				}
 			}
 			
-			// Total conversions: 256 + 64 + 16 = 336
-			while (counter.getCount() < 336)
+			if (mode == 1)
 			{
-				Thread.sleep(10);
-			}
-			
-			Currency currencyEur = bank.getCurrency("eur");
-			Currency currencyUsd = bank.getCurrency("usd");
-			String[] accountIds = {"0", "1", "2"};
-			for (String accountId : accountIds)
-			{
-				Account account = bank.getAccount(accountId);
-				System.out.println( account.getId() + " " + account.getName() + " " + account.getAmount(currencyEur) + " " + account.getAmount(currencyUsd) );
+				new Thread( new UserClient(bank) ).start();
 			}
 		}
 		catch (BankException | InterruptedException e)

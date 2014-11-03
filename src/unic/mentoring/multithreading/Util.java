@@ -6,6 +6,9 @@
 
 package unic.mentoring.multithreading;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Util
 {
 	public static String makeConversionCode(Currency source, Currency destination)
@@ -15,7 +18,10 @@ public class Util
 	
 	public static double round(double value, double valuette)
 	{
-		return ((int)(value / valuette)) * valuette;
+		BigDecimal bdValue = new BigDecimal(value);
+		BigDecimal bdValuette = new BigDecimal(valuette);
+		
+		return bdValue.divide(bdValuette, 0, RoundingMode.HALF_UP).multiply(bdValuette).doubleValue();
 	}
 	
 	public static double convertCurrency(double amount, double rate, double valuette)
@@ -31,7 +37,7 @@ public class Util
 	
 	public static String getFileName(String filename)
 	{
-		int p = filename.indexOf('.');
+		int p = filename.lastIndexOf('.');
 		return p == -1 ? filename : filename.substring(0, p);
 	}
 }

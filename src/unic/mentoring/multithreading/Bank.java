@@ -11,13 +11,13 @@ import java.util.Map;
 
 public class Bank
 {
-	private Service service;
+	private ServiceImpl service;
 	private Map<String, Currency> currencies;
 	private Map<String, Conversion> conversions;
 	
 	public Bank()
 	{
-		this.service = new Service();
+		this.service = new ServiceImpl();
 		this.currencies = new HashMap<String, Currency>();
 		this.conversions = new HashMap<String, Conversion>();
 	}
