@@ -17,20 +17,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ServiceImpl
+public class ServiceImpl implements Service
 {
 	protected final String DIR_DATA = "data/";
 	protected final String DIR_ACCOUNTS = "accounts/";
 	protected final String FEXT_JAVA_SERIALIZED = ".jsrl";
-	protected static long newAccountId = 0;
+	protected long newAccountId = 0;
 	protected Dao dao;
 	
 	private Map<String, LockableObject<Account>> accountsCache;
 	
 	public ServiceImpl()
 	{
+		this( new DaoImpl() );
+	}
+	
+	public ServiceImpl(Dao dao)
+	{
 		this.accountsCache = new ConcurrentHashMap<>();
-		this.dao = new DaoImpl();
+		this.dao = dao;
 	}
 	
 	public String createAccount(String name) throws ServiceException

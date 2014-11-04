@@ -37,7 +37,7 @@ public class Currency implements Serializable
 		if (o instanceof Currency)
 		{
 			Currency currency = (Currency)o;
-			return code.equals( currency.getCode() );
+			return code.equals( currency.getCode() ) && valuette == currency.getValuette();
 		}
 		
 		return false;

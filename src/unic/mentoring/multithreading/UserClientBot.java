@@ -28,7 +28,7 @@ public class UserClientBot extends Client
 		{
 			for (int i = 0; i < iterations; ++i)
 			{
-				bank.convert(accountId, "usd", "eur", i + 1);
+				bank.convert(accountId, "usd", "eur", 1);
 				counter.inc();
 			}
 		}

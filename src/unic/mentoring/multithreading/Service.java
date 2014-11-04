@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface Service
 {
-	public String createAccount(String name) throws ServiceException;
-	public void saveAccount(Account account) throws ServiceException;
-	public Account getAccount(String id) throws ServiceException;
-	public List<Account> findAccountsByName(String query);
+	String createAccount(String name) throws ServiceException;
+	void saveAccount(Account account) throws ServiceException;
+	Account getAccount(String id) throws ServiceException;
+	List<Account> findAccountsByName(String query);
 	void saveAll() throws ServiceException;
 	void loadAll() throws ServiceException;
-	public void convert(String accountId, Conversion conversion, double amount) throws ServiceException;
+	void convert(String accountId, Conversion conversion, double amount) throws ServiceException;
 }

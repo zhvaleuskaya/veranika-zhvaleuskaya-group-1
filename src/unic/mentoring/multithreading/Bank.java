@@ -11,13 +11,18 @@ import java.util.Map;
 
 public class Bank
 {
-	private ServiceImpl service;
+	private Service service;
 	private Map<String, Currency> currencies;
 	private Map<String, Conversion> conversions;
 	
 	public Bank()
 	{
-		this.service = new ServiceImpl();
+		this( new ServiceImpl() );
+	}
+	
+	public Bank(Service service)
+	{
+		this.service = service;
 		this.currencies = new HashMap<String, Currency>();
 		this.conversions = new HashMap<String, Conversion>();
 	}
@@ -83,7 +88,7 @@ public class Bank
 		}
 	}
 	
-	protected Account getAccount(String id) throws BankException
+	public Account getAccount(String id) throws BankException
 	{
 		try
 		{

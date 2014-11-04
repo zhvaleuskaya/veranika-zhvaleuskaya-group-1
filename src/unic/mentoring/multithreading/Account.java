@@ -7,7 +7,10 @@
 package unic.mentoring.multithreading;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Account implements Serializable
@@ -58,5 +61,52 @@ public class Account implements Serializable
 	public void removeCurrency(Currency currency)
 	{
 		amounts.remove(currency);
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o instanceof Account)
+		{
+			Account account = (Account)o;
+			
+			if (!id.equals(account.getId()))
+				return false;
+			if (!name.equals(account.getName()))
+				return false;
+			
+			for (Currency currency : amounts.keySet())
+			{
+				Double value = account.getAmount(currency);
+				
+				if (value == null || !value.equals( amounts.get(currency) ))
+					return false;
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public String toString()
+	{
+		List<Currency> keys = new ArrayList<>();
+		keys.addAll( amounts.keySet() );
+		Collections.sort(keys, CurrencyComparator.INSTANCE);
+		
+		StringBuilder amountsHash = new StringBuilder();
+		
+		for (Currency currency : keys)
+			amountsHash.append("|").append(currency.getCode()).append(":").append(amounts.get(currency));
+		
+		return (id + "|" + name + "@" + amountsHash.toString());
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return toString().hashCode();
 	}
 }

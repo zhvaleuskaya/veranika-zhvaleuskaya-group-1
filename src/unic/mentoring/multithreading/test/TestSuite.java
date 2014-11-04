@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import unic.mentoring.multithreading.ServiceTest;
+
 @RunWith(Suite.class)
-@SuiteClasses({ UtilTest.class, DaoTest.class })
+@SuiteClasses({ UtilTest.class, DaoTest.class, ServiceTest.class, ClientsTest.class })
 public class TestSuite{}
