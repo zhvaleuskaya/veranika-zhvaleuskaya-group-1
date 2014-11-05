@@ -1,0 +1,43 @@
+2014-11-06 00:49:15 INFO  Bank:50 - Currency added: eur:0.01
+2014-11-06 00:49:15 INFO  Bank:50 - Currency added: usd:0.01
+2014-11-06 00:49:15 INFO  Bank:83 - Conversion added: eur->usd:1.27363
+2014-11-06 00:49:15 INFO  Bank:83 - Conversion added: usd->eur:0.78515
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Object has been written: _testAccountId|theName@|currOne:0.0|currTwo:125.45
+2014-11-06 00:49:47 DEBUG ServiceImpl:36 - Object has been readed: _testAccountId|theName@|currOne:0.0|currTwo:125.45
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Account created: id="0", name="theName1"
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Account created: id="1", name="theName2"
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Account created: id="0", name="theName"
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Account created: id="0", name="theName"
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.75": 10.0->7.5
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Account created: id="0", name="fertility"
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Account created: id="1", name="offering"
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Account created: id="2", name="proficiency"
+2014-11-06 00:49:47 INFO  Bank:50 - Currency added: eur:0.01
+2014-11-06 00:49:47 INFO  Bank:50 - Currency added: usd:0.01
+2014-11-06 00:49:47 INFO  Bank:83 - Conversion added: eur->usd:1.27363
+2014-11-06 00:49:47 INFO  Bank:83 - Conversion added: usd->eur:0.78515
+2014-11-06 00:49:47 DEBUG ServiceImpl:61 - Account created: id="0", name="The torturing account"
+2014-11-06 00:49:47 DEBUG UserClientBot:36 - Thread unic.mentoring.multithreading.client.UserClientBot@4486de started.
+2014-11-06 00:49:47 DEBUG UserClientBot:36 - Thread unic.mentoring.multithreading.client.UserClientBot@1b6484c started.
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:47 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ServiceImpl:250 - Conversion performed for account "0" with conversion "usd->eur:0.78515": 1.0->0.79
+2014-11-06 00:49:48 INFO  ClientsTest:84 - Execution results: 45 34
+2014-11-06 00:49:48 INFO  ClientsTest:87 - Conversion result for "0": eur:115.80000000000013, usd:124.0
