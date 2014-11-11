@@ -6,6 +6,7 @@
 
 package unic.mentoring.multithreading.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.junit.Assert;
@@ -20,6 +21,7 @@ import unic.mentoring.multithreading.core.Account;
 import unic.mentoring.multithreading.core.Conversion;
 import unic.mentoring.multithreading.core.Currency;
 import unic.mentoring.multithreading.dao.Dao;
+import unic.mentoring.multithreading.exception.DaoException;
 import unic.mentoring.multithreading.exception.ServiceException;
 import unic.mentoring.multithreading.service.impl.ServiceImpl;
 
@@ -142,5 +144,30 @@ public class ServiceTest
 		service.saveAccount(account);
 		
 		service.convert("0", conversionUsd2Eur, 20);
+	}
+	
+	@Test
+	public void unitConvert() throws ServiceException, DaoException
+	{
+		Service service = new ServiceImpl(dao);
+		Account account = Mockito.mock(Account.class);
+		Mockito.when(account.getAmount(currencyEur)).thenReturn(5d);
+		Mockito.when(account.getAmount(currencyUsd)).thenReturn(10d);
+		Conversion conversion = Mockito.mock(Conversion.class);
+		Mockito.when(conversion.getSource()).thenReturn(currencyUsd);
+		Mockito.when(conversion.getDestination()).thenReturn(currencyEur);
+		Mockito.when(conversion.getRate()).thenReturn(1.5d);
+		// Can't access cache to mock it's methods
+		service.convert("0", conversion, 2);
+		
+		Mockito.verify(service).saveAccount(account);
+	}
+	
+	@Test
+	public void unitCreateAccount() throws ServiceException, DaoException
+	{
+		Service service = new ServiceImpl(dao);
+		service.createAccount("theName");
+		Mockito.verify(dao,Mockito.times(1)).writeItem(Mockito.any(File.class), Mockito.any(Account.class));
 	}
 }
