@@ -7,11 +7,7 @@
 package unic.mentoring.multithreading.service.impl;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,19 +71,19 @@ public class ServiceImpl implements Service
 		}
 	}
 	
-	protected void writeAccount(Account account) throws IOException
+	protected void writeAccount(Account account) throws IOException, ServiceException
 	{
 		String filePath = DIR_DATA + DIR_ACCOUNTS + account.getId() + FEXT_JAVA_SERIALIZED;
 		File file = new File(filePath);
 		
-		if (!file.exists())
+		try
 		{
-			Files.createFile( Paths.get(filePath) );
+			dao.writeItem(file, account);
 		}
-		
-		ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( new File(filePath) ) );
-		oos.writeObject(account);
-		oos.close();
+		catch (DaoException e)
+		{
+			throw new ServiceException("Can't save account: " + e.getMessage());
+		}
 		
 		LockableObject<Account> loAccount = accountsCache.get( account.getId() );
 		
