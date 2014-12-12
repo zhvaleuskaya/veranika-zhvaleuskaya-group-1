@@ -100,13 +100,17 @@ public class ServiceImpl implements Service
 		}
 		
 		Session session = sessionFactory.openSession();
+		Transaction tx = null;
 		
 		try
 		{
+			tx = session.beginTransaction();
 			session.delete(model);
+			tx.commit();
 		}
 		catch (HibernateException e)
 		{
+			if (tx != null) tx.rollback();
 			LOG.error(e.getMessage());
 		}
 		finally
@@ -130,13 +134,17 @@ public class ServiceImpl implements Service
 		}
 		
 		Session session = sessionFactory.openSession();
+		Transaction tx = null;
 		
 		try
 		{
+			tx = session.beginTransaction();
 			session.update(model);
+			tx.commit();
 		}
 		catch (HibernateException e)
 		{
+			if (tx != null) tx.rollback();
 			LOG.error(e.getMessage());
 		}
 		finally
@@ -221,7 +229,7 @@ public class ServiceImpl implements Service
 	{
 		return get(id, Employee.class);
 	}
-
+	
 	@Override
 	public void removeUnit(Integer id)
 	{
@@ -237,18 +245,54 @@ public class ServiceImpl implements Service
 	@Override
 	public void removeEmployee(Integer id)
 	{
+		Employee employee = getEmployee(id);
+		
+		if (employee == null)
+		{
+			LOG.error("Can't retreive employee for removing: id=" + id);
+			return;
+		}
+		
+		remove( employee.getProfile() );
 		remove(id, Employee.class);
+	}
+	
+	@Override
+	public void updateUnit(Unit model)
+	{
+		update(model);
 	}
 
 	@Override
-	public void addEmployeeToUnit(Integer employeeId, Integer initId)
+	public void updateProject(Project model)
 	{
-		//TODO
+		update(model);
+	}
+
+	@Override
+	public void updateEmployee(Employee model)
+	{
+		update(model.getProfile());
+		update(model);
+	}
+
+	@Override
+	public void addEmployeeToUnit(Integer employeeId, Integer unitId)
+	{
+		Employee employee = getEmployee(employeeId);
+		Unit unit = getUnit(unitId);
+		
+		employee.setUnit(unit);
+		update(employee);
 	}
 
 	@Override
 	public void addEmployeeToProject(Integer employeeId, Integer projectId)
 	{
-		//TODO
+		Employee employee = getEmployee(employeeId);
+		Project project = getProject(projectId);
+		
+		employee.getProjects().add(project);
+		update(employee);
 	}
 }

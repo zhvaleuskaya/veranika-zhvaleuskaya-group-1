@@ -6,6 +6,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ public class Employee implements java.io.Serializable
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "unit_id")
+	@JoinColumn(name = "unit_id", nullable = true)
 	private Unit unit;
 	
 	@OneToOne
@@ -37,8 +38,8 @@ public class Employee implements java.io.Serializable
 	
 	@Embedded()
 	private Address address;
-	
-	@ManyToMany
+	//cascade = CascadeType.ALL
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "employee2project",
 			joinColumns = @JoinColumn(name = "employee_id"),
 			inverseJoinColumns = @JoinColumn(name = "project_id"))
@@ -104,5 +105,15 @@ public class Employee implements java.io.Serializable
 	public void setUnit(Unit unit)
 	{
 		this.unit = unit;
+	}
+	
+	public Collection<Project> getProjects()
+	{
+		return projects;
+	}
+	
+	public void setProjects(Collection<Project> projects)
+	{
+		this.projects = projects;
 	}
 }

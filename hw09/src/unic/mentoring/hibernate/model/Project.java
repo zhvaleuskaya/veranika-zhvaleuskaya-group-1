@@ -3,6 +3,7 @@ package unic.mentoring.hibernate.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,7 @@ public class Project implements java.io.Serializable
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "employee2project",
 			joinColumns = @JoinColumn(name = "project_id"),
 			inverseJoinColumns = @JoinColumn(name = "employee_id"))
@@ -54,5 +55,15 @@ public class Project implements java.io.Serializable
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+	
+	public Collection<Employee> getEmployees()
+	{
+		return employees;
+	}
+	
+	public void setEmployees(Collection<Employee> employees)
+	{
+		this.employees = employees;
 	}
 }

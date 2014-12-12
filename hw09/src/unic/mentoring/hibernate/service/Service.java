@@ -27,6 +27,10 @@ public interface Service
 	void removeProject(Integer id);
 	void removeEmployee(Integer id);
 	
-	void addEmployeeToUnit(Integer employeeId, Integer initId);
+	void updateUnit(Unit model);
+	void updateProject(Project model);
+	void updateEmployee(Employee model);
+	
+	void addEmployeeToUnit(Integer employeeId, Integer unitId);
 	void addEmployeeToProject(Integer employeeId, Integer projectId);
 }
