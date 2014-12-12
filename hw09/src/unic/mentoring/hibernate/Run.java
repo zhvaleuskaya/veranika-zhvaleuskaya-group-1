@@ -6,6 +6,8 @@
 
 package unic.mentoring.hibernate;
 
+import java.util.ArrayList;
+
 import org.hibernate.SessionFactory;
 
 import unic.mentoring.hibernate.model.Employee;
@@ -50,6 +52,10 @@ public class Run
 		project = service.getProject(idProject1);
 		project.setName("Project One New");
 		service.updateProject(project);
+		
+		employee = service.getEmployee(1);
+		employee.setProjects( new ArrayList<Project>() );
+		service.updateEmployee(employee);
 		
 		service.removeUnit(idUnit);
 		service.removeProject(idProject1);

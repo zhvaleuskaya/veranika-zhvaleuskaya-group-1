@@ -16,6 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 public class Employee implements java.io.Serializable
 {
@@ -31,6 +34,7 @@ public class Employee implements java.io.Serializable
 	
 	@OneToOne
 	@JoinColumn(name = "profile_id")
+	@Cascade({CascadeType.DELETE})
 	private Profile profile;
 	
 	@Enumerated(EnumType.STRING)
@@ -38,7 +42,7 @@ public class Employee implements java.io.Serializable
 	
 	@Embedded()
 	private Address address;
-	//cascade = CascadeType.ALL
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "employee2project",
 			joinColumns = @JoinColumn(name = "employee_id"),

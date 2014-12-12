@@ -3,9 +3,11 @@ package unic.mentoring.hibernate.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -17,7 +19,8 @@ public class Unit implements java.io.Serializable
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@OneToMany(mappedBy = "unit", targetEntity = Employee.class)
+	@OneToMany(targetEntity = Employee.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "unit_id")
 	private Collection<Employee> employees;
 	
 	private String name;

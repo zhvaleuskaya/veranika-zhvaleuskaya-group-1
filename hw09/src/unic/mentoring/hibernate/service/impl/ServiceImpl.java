@@ -233,12 +233,34 @@ public class ServiceImpl implements Service
 	@Override
 	public void removeUnit(Integer id)
 	{
+		Unit unit = getUnit(id);
+		
+		if (unit == null)
+		{
+			LOG.error("Can't retreive unit for removing: id=" + id);
+			return;
+		}
+		
+		unit.getEmployees().clear();
+		update(unit);
+		
 		remove(id, Unit.class);
 	}
 
 	@Override
 	public void removeProject(Integer id)
 	{
+		Project project = getProject(id);
+		
+		if (project == null)
+		{
+			LOG.error("Can't retreive project for removing: id=" + id);
+			return;
+		}
+		
+		project.getEmployees().clear();
+		update(project);
+		
 		remove(id, Project.class);
 	}
 
@@ -253,7 +275,9 @@ public class ServiceImpl implements Service
 			return;
 		}
 		
-		remove( employee.getProfile() );
+		employee.getProjects().clear();
+		update(employee);
+		
 		remove(id, Employee.class);
 	}
 	
