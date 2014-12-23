@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation=
+		"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean class="unic.mentoring.springcore.init.ProductInitializer">
+		<constructor-arg ref="productService"/>
+	</bean>
+
+	<bean class="unic.mentoring.springcore.init.ProposalInitializer" autowire="byName"/>
+
+	<bean class="unic.mentoring.springcore.init.SellerInitializer">
+		<constructor-arg>
+			<map key-type="java.lang.Long" value-type="java.lang.String">
+				<entry key="1">
+					<util:constant static-field="unic.mentoring.springcore.common.Sellers.AMAZON"/>
+				</entry>
+				<entry key="2">
+					<util:constant static-field="unic.mentoring.springcore.common.Sellers.SAMSUNG"/>
+				</entry>
+				<entry key="3">
+					<value>Apple</value>
+				</entry>
+			</map>
+		</constructor-arg>
+		<property name="sellerService" ref="sellerService"/>
+	</bean>
+
+	<bean class="unic.mentoring.springcore.init.UserInitializer">
+		<constructor-arg ref="userService"/>
+	</bean>
+	
+	<bean class="unic.mentoring.springcore.init.DataInitializer" autowire="byType" init-method="initData"/>
+</beans>
