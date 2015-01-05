@@ -91,8 +91,10 @@ public class CatalogFacadeMock implements CatalogFacade
 		product.setId(id);
 		product.setName("The product " + id);
 		product.setDescription("The description for " + product.getName() + ".");
-		product.setCategoryId(707);
-		product.setCategoryName("The category " + product.getCategoryId());
+		CategoryData category = new CategoryData();
+		category.setId(707);
+		category.setName("The category " + category.getId());
+		product.setCategory(category);
 		return product;
 	}
 }
