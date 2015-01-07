@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:shop.properties"/>
+	
+	<bean name="productRepository" class="unic.mentoring.springcore.repository.map.ProductMapRepository"/>
+	
+	<bean id="orderRepository" class="unic.mentoring.springcore.repository.map.OrderMapRepository">
+		<constructor-arg type="long" value="${orderRepository.initialSequence}"/>
+	</bean>
+	
+	<bean name="sellerRepository" class="unic.mentoring.springcore.repository.map.SellerMapRepository"/>
+	<bean id="itemRepository" class="unic.mentoring.springcore.repository.map.ItemMapRepository"/>
+	<bean name="proposalRepository" class="unic.mentoring.springcore.repository.map.ProposalMapRepository"/>
+	<bean id="userRepositoryFactory" class="unic.mentoring.springcore.repository.factory.UserRepositoryFactory"/>
+	<bean id="userRepository" factory-bean="userRepositoryFactory" factory-method="createUserRepository"/>
+</beans>

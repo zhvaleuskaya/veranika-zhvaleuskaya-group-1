@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="orderService" class="unic.mentoring.springcore.api.impl.OrderServiceImpl">
+		<property name="orderRepository" ref="orderRepository" />
+		<property name="itemService" ref="itemService" />
+	</bean>
+
+	<bean id="itemService" class="unic.mentoring.springcore.api.impl.ItemServiceImpl">
+		<constructor-arg index="0" ref="itemRepository" />
+	</bean>
+
+	<bean id="proposalService" class="unic.mentoring.springcore.api.impl.ProposalServiceImpl">
+		<constructor-arg ref="proposalRepository" />
+		<property name="productService" ref="productService" />
+		<property name="sellerService" ref="sellerService" />
+	</bean>
+
+	<bean id="productService" class="unic.mentoring.springcore.api.impl.ProductServiceImpl"
+		autowire="constructor" />
+
+	<bean id="sellerService" class="unic.mentoring.springcore.api.impl.SellerServiceImpl"
+		autowire="byType" />
+
+	<bean id="userService" class="unic.mentoring.springcore.api.impl.UserServiceImpl"
+		p:repository-ref="userRepository" />
+</beans>
