@@ -1,0 +1,54 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+				http://www.springframework.org/schema/mvc
+				http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<bean id="contentNegotiatingResolver" class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}" />
+		<property name="favorPathExtension" value="true" />
+		<property name="contentNegotiationManager">
+			<bean class="org.springframework.web.accept.ContentNegotiationManager">
+				<constructor-arg>
+					<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+						<constructor-arg>
+							<map>
+								<entry key="html" value="text/html" />
+								<entry key="pdf" value="application/pdf" />
+								<entry key="xsl" value="application/vnd.ms-excel" />
+								<entry key="xml" value="application/xml" />
+								<entry key="json" value="application/json" />
+								<entry key="atom" value="application/xml" />
+							</map>
+						</constructor-arg>
+					</bean>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="broker" class="org.apache.activemq.xbean.XBeanBrokerService">
+		<property name="useJmx" value="false"></property>
+		<property name="persistent" value="true"></property>
+		<property name="transportConnectors">
+			<bean class="org.apache.activemq.broker.TransportConnector">
+				<property name="uri" value="tcp://localhost:0" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQXAConnectionFactory">
+		<property name="brokerURL" value="tcp://localhost:61616"></property>
+	</bean>
+
+  <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	
+	<mvc:resources mapping="/**" location="classpath:/res/" cache-period="3600" />
+	<bean id="pathResourceResolver" class="org.springframework.web.servlet.resource.PathResourceResolver" />
+</beans>
