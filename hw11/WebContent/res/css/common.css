@@ -1,0 +1,148 @@
+body
+{
+	background: #798;
+	font-family: Trebuchet MS, verdana, serif;
+}
+
+.content
+{
+	min-width: 500px;
+	min-height: 200px;
+}
+
+.content td, .content tr
+{
+	padding: 0;
+}
+
+.content tr.header, tr.footer
+{
+	text-align: center;
+}
+
+.content tr.header td
+{
+	background: transparent;
+}
+
+.content tr.header
+{
+	background-color: #ced;
+	background: linear-gradient(#cff7df, #c0eed0);
+}
+
+.content tr.header td
+{
+	font-weight: bold;
+	font-size: 2em;
+}
+
+.content tr.header td.content
+{
+	color: #5c9;
+	padding: 8px 16px;
+	text-align: center;
+}
+
+.content tr.footer
+{
+	color: #fff;
+	background-color: #acb;
+	background: linear-gradient(#acb, #9ba);
+	font-weight: bold;
+	font-size: 0.8em;
+}
+
+.content tr.footer td
+{
+	padding: 4px 16px;
+}
+
+.content .body
+{
+	background: #fff;
+}
+
+.content td.menu
+{
+	background: #dafaf7;
+	min-width: 200px;
+	text-align: left;
+	vertical-align: top;
+}
+
+.content .body
+{
+	min-widht: 300px;
+	text-align: left;
+	vertical-align: top;
+}
+
+.content
+{
+	border-collapse: collapse;
+}
+
+.content .menu a
+{
+	font-weight: bold;
+	text-decoration: none;
+	padding: 2px 8px;
+	margin: 1px 0px;
+	border-left: #fff 4px solid;
+	display: inline-block;
+}
+
+.content .menu a:LINK, .content .menu a:VISITED
+{
+	color: #00f;
+}
+
+.content .menu a:HOVER
+{
+	color: #03f;
+	background: rgba(255, 255, 255, 0.75);
+	border-left: #acf 4px solid;
+}
+
+.content .menu a:ACTIVE
+{
+	color: #07f;
+	background: rgba(255, 255, 255, 1);
+	border-left: #5af 4px solid;
+}
+
+.content h2
+{
+	color: #5c5;
+	font-size: 1.5em;
+	margin: 0px 0px 12px;
+	padding: 8px 16px;
+	background-color: #efe;
+	background: linear-gradient(#f7fff7, #e0ffe0);
+}
+
+a, a:LINK
+{
+	outline-color: transparent;
+	outline-style: none;
+	outline-width: 0;
+}
+
+.content .body div.content
+{
+	margin: 0;
+	padding: 8px 16px;
+}
+
+table.header
+{
+	border-collapse: collapse;
+	margin: 0;
+	padding: 0;
+}
+
+p
+{
+	margin: 0px 0px 12px 0px;
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="main_tpl" template="/layout/main.jsp">
+		<put-attribute name="title" value="The App" />
+		<put-attribute name="header" value="/struct/header.jsp" />
+		<put-attribute name="menu" value="/struct/menu.jsp" />
+		<put-attribute name="footer" value="/struct/footer.jsp" />
+	</definition>
+	<definition name="index" extends="main_tpl">
+		<put-attribute name="body" value="/struct/bodyIndex.jsp" />
+	</definition>
+	<definition name="catalog" extends="main_tpl">
+		<put-attribute name="body" value="/struct/bodyCatalog.jsp" />
+	</definition>
+	<definition name="category" extends="main_tpl">
+		<put-attribute name="body" value="/struct/bodyCategory.jsp" />
+	</definition>
+	<definition name="product" extends="main_tpl">
+		<put-attribute name="body" value="/struct/bodyProduct.jsp" />
+	</definition>
+</tiles-definitions>
