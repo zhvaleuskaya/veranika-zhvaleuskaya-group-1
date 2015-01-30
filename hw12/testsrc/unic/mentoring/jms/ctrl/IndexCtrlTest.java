@@ -8,16 +8,13 @@ package unic.mentoring.jms.ctrl;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class IndexCtrlTest
 {
-	@Autowired
-	private IndexCtrl ctrl;
-	
 	@Test
 	public void indexTest()
 	{
+		IndexCtrl ctrl = new IndexCtrl();
 		Assert.assertEquals("index", ctrl.index(null));
 	}
 }
