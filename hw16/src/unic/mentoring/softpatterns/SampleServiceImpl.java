@@ -7,12 +7,21 @@
 package unic.mentoring.softpatterns;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ServiceImpl implements Service
+public class SampleServiceImpl implements Service
 {
 	private List<Ticket> tickets;
 
+	public SampleServiceImpl()
+	{
+		tickets = new ArrayList<Ticket>();
+		tickets.add( new Ticket( new Route("A", "B"), 12, new Date() ) );
+		tickets.add( new Ticket( new Route("B", "C"), 25, new Date() ) );
+		tickets.add( new Ticket( new Route("A", "C"), 34, new Date() ) );
+	}
+	
 	@Override
 	public List<Ticket> findTickets(Criteria<Ticket> criteria)
 	{

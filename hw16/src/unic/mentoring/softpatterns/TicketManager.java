@@ -6,12 +6,12 @@
 
 package unic.mentoring.softpatterns;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Pattern: Layers Architecture
- * 0ro layer: TicketServer
- * 1st layer: TicketManager
- * 2nd layer: Service
+/** Pattern: Anti-Corruption Layer
+ * Adapter between user text queries interface and Service API.
  */
 public class TicketManager
 {
@@ -22,22 +22,86 @@ public class TicketManager
 		this.service = service;
 	}
 	
-	private Criteria<Ticket> parseCriteria(String query) throws ParsingException
+	private String processQuery(String command, Map<String, String> paramsMap) throws QueryProcessingException
 	{
-		//TODO criteria parsing logic
+		if ("find".equals(command))
+		{
+			Criteria<Ticket> criteria = parseCriteria(paramsMap);
+			List<Ticket> tickets = service.findTickets(criteria);
+			stringify(tickets);
+		}
 		
-		throw new ParsingException("Can't parse ticket criteria from \"" + query + "\"");
+		throw new QueryProcessingException("Unknown command \"" + command + "\"");
 	}
 	
 	public String processQuery(String query)
 	{
-		//TODO process query logic
+		String response = "Malformed query.";
+		String[] arguments = query.split(" ");
 		
-		return "";
+		if (arguments.length > 0)
+		{
+			String command = arguments[0];
+			Map<String, String> paramsMap = null;
+			
+			if (arguments.length > 1)
+			{
+				paramsMap = new HashMap<>();
+				
+				for (int iParam = 1; iParam < arguments.length; ++iParam)
+				{
+					String param = arguments[iParam];
+					String[] keyValue = param.split("=");
+					
+					if (keyValue.length == 2)
+					{
+						paramsMap.put(keyValue[0], keyValue[1]);
+					}
+				}
+			}
+			
+			try
+			{
+				response = processQuery(command, paramsMap);
+			}
+			catch (QueryProcessingException e)
+			{
+				response = "Error: " + e.getMessage();
+			}
+		}
+		
+		return response;
 	}
 	
-	public List<Ticket> findTickets(String query) throws ParsingException
+	private Criteria<Ticket> parseCriteria(Map<String, String> paramsMap)
 	{
-		return service.findTickets( parseCriteria(query) );
+		TicketCriteria criteria = new TicketCriteria();
+		criteria.setSource( paramsMap.get("from") );
+		criteria.setSource( paramsMap.get("to") );
+		criteria.setSource( paramsMap.get("on") );
+		
+		return criteria;
+	}
+	
+	private String stringify(List<Ticket> tickets)
+	{
+		StringBuilder sb = new StringBuilder( tickets.isEmpty() ? "No tickets found." : "Tickets found: " );
+		boolean more = false;
+		
+		for (Ticket ticket : tickets)
+		{
+			if (more)
+			{
+				sb.append(", ");
+			}
+			else
+			{
+				more = true;
+			}
+			
+			sb.append("[").append(ticket.toString()).append("]");
+		}
+		
+		return sb.toString();
 	}
 }

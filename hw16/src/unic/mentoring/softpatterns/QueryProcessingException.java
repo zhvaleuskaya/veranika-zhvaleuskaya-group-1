@@ -6,11 +6,11 @@
 
 package unic.mentoring.softpatterns;
 
-public class ParsingException extends Exception
+public class QueryProcessingException extends Exception
 {
 	private static final long serialVersionUID = 0;
 	
-	public ParsingException(String message)
+	public QueryProcessingException(String message)
 	{
 		super(message);
 	}

@@ -14,9 +14,16 @@ import java.util.Date;
 public class Ticket
 {
 	private Route route;
-	private double cost;
+	private int cost;
 	private Date time;
 
+	public Ticket(Route route, int cost, Date time)
+	{
+		this.route = route;
+		this.cost = cost;
+		this.time = time;
+	}
+	
 	public Route getRoute()
 	{
 		return route;
@@ -27,12 +34,12 @@ public class Ticket
 		this.route = route;
 	}
 
-	public double getCost()
+	public int getCost()
 	{
 		return cost;
 	}
 
-	public void setCost(double cost)
+	public void setCost(int cost)
 	{
 		this.cost = cost;
 	}
@@ -45,5 +52,11 @@ public class Ticket
 	public void setTime(Date time)
 	{
 		this.time = time;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "From \"" + route.getSource() + "\" to \"" + route.getDestination() + "\" on " + time.toString() + " for " + cost;
 	}
 }

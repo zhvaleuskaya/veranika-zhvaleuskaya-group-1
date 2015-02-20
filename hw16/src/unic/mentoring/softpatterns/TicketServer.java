@@ -12,13 +12,15 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/** Pattern: Open Host Service
+/**
+ * Pattern: Open Host Service
  * Listens for queries in specific format and plays role of network service.
  */
 public class TicketServer
 {
 	private TicketManager manager;
 	private boolean alive = true;
+	private ServerSocket serverSocket;
 	
 	public TicketServer(TicketManager manager)
 	{
@@ -27,16 +29,29 @@ public class TicketServer
 	
 	public void listen() throws IOException
 	{
-		ServerSocket serverSocket = new ServerSocket(C.Remote.PORT);
+		serverSocket = new ServerSocket(C.Remote.PORT);
 		
 		while (alive)
 		{
-			Socket clientSocket = serverSocket.accept();
-			BufferedReader br = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()) );
-			String request = br.readLine();
-			String response = manager.processQuery(request);
-			clientSocket.getOutputStream().write(response.getBytes(), 0, response.length());
-			clientSocket.close();
+			Socket clientSocket = null;
+			
+			try
+			{
+				clientSocket = serverSocket.accept();
+			}
+			catch (IOException e)
+			{
+				break;
+			}
+			
+			if (clientSocket != null)
+			{
+				BufferedReader br = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()) );
+				String request = br.readLine();
+				String response = manager.processQuery(request);
+				clientSocket.getOutputStream().write( (response + "\\n").getBytes(), 0, response.length() );
+				clientSocket.close();
+			}
 		}
 		
 		serverSocket.close();
@@ -45,11 +60,17 @@ public class TicketServer
 	public void die()
 	{
 		alive = false;
+		
+		try
+		{
+			serverSocket.close();
+		}
+		catch (IOException e){}
 	}
 	
 	public static void main(String args[]) throws IOException
 	{
-		Service service = new ServiceImpl();
+		Service service = new SampleServiceImpl();
 		TicketManager manager = new TicketManager(service);
 		TicketServer server = new TicketServer(manager);
 		server.listen();
