@@ -4,7 +4,7 @@
  * GPL v3: http://gnu.org/licenses
  */
 
-package unic.mentoring.softpatterns;
+package unic.mentoring.softpatterns.ticketsystem.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,8 +12,9 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * Pattern: Open Host Service
+import unic.mentoring.softpatterns.C;
+
+/** Pattern: Open Host Service
  * Listens for queries in specific format and plays role of network service.
  */
 public class TicketServer
@@ -29,7 +30,7 @@ public class TicketServer
 	
 	public void listen() throws IOException
 	{
-		serverSocket = new ServerSocket(C.Remote.PORT);
+		serverSocket = new ServerSocket(C.Remote.TICKET_SYSTEM_PORT);
 		
 		while (alive)
 		{
@@ -66,13 +67,5 @@ public class TicketServer
 			serverSocket.close();
 		}
 		catch (IOException e){}
-	}
-	
-	public static void main(String args[]) throws IOException
-	{
-		Service service = new SampleServiceImpl();
-		TicketManager manager = new TicketManager(service);
-		TicketServer server = new TicketServer(manager);
-		server.listen();
 	}
 }

@@ -10,7 +10,12 @@ public class C
 {
 	public class Remote
 	{
-		public static final String HOST = "127.0.0.1";
-		public static final int PORT = 60007;
+		public static final String LOCALHOST = "127.0.0.1";
+		public static final String TICKET_SYSTEM_HOST = LOCALHOST;
+		public static final int TICKET_SYSTEM_PORT = 60007;
+		public static final String ROUTE_EXTERNAL_DATASOURCE_HOST = LOCALHOST;
+		public static final int ROUTE_EXTERNAL_DATASOURCE_PORT = 60010;
+		public static final String TICKET_EXTERNAL_DATASOURCE_HOST = LOCALHOST;
+		public static final int TICKET_EXTERNAL_DATASOURCE_PORT = 60011;
 	}
 }

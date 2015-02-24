@@ -4,11 +4,14 @@
  * GPL v3: http://gnu.org/licenses
  */
 
-package unic.mentoring.softpatterns;
+package unic.mentoring.softpatterns.ticketsystem.server;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import unic.mentoring.softpatterns.data.Ticket;
+import unic.mentoring.softpatterns.ticketsystem.service.Service;
 
 /** Pattern: Anti-Corruption Layer
  * Adapter between user text queries interface and Service API.

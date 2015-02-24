@@ -4,13 +4,15 @@
  * GPL v3: http://gnu.org/licenses
  */
 
-package unic.mentoring.softpatterns;
+package unic.mentoring.softpatterns.ticketsystem.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import unic.mentoring.softpatterns.C;
 
 /** Pattern: Layers Architecture
  * Layer 1: ConsoleTicketClient
@@ -66,7 +68,7 @@ public class ConsoleTicketClient
 	
 	public static String query(String request) throws UnknownHostException, IOException
 	{
-		Socket socket = new Socket(C.Remote.HOST, C.Remote.PORT);
+		Socket socket = new Socket(C.Remote.TICKET_SYSTEM_HOST, C.Remote.TICKET_SYSTEM_PORT);
 		socket.getOutputStream().write( (request + "\\n").getBytes() );
 		BufferedReader br = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
 		String response = br.readLine();

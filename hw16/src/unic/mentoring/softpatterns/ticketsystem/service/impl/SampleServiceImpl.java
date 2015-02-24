@@ -4,11 +4,16 @@
  * GPL v3: http://gnu.org/licenses
  */
 
-package unic.mentoring.softpatterns;
+package unic.mentoring.softpatterns.ticketsystem.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import unic.mentoring.softpatterns.data.Route;
+import unic.mentoring.softpatterns.data.Ticket;
+import unic.mentoring.softpatterns.ticketsystem.server.Criteria;
+import unic.mentoring.softpatterns.ticketsystem.service.Service;
 
 public class SampleServiceImpl implements Service
 {

@@ -4,7 +4,7 @@
  * GPL v3: http://gnu.org/licenses
  */
 
-package unic.mentoring.softpatterns;
+package unic.mentoring.softpatterns.ticketsystem.server;
 
 public interface Criteria<T>
 {

@@ -4,9 +4,11 @@
  * GPL v3: http://gnu.org/licenses
  */
 
-package unic.mentoring.softpatterns;
+package unic.mentoring.softpatterns.ticketsystem.server;
 
 import java.util.Date;
+
+import unic.mentoring.softpatterns.data.Ticket;
 
 public class TicketCriteria implements Criteria<Ticket>
 {
